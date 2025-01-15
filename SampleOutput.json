@@ -1,0 +1,45 @@
+{
+    "status": "ok",
+    "totalResults": 3,
+    "articles": [
+        {
+            "source": {
+                "id": null,
+                "name": "BBC News"
+            },
+            "author": "https://www.facebook.com/bbcnews",
+            "title": "Los Angeles braces for dangerously high winds as fires continue to burn - live updates - BBC.com",
+            "description": "Forecasters say gusts of up to 70mph could spark new fires and spread current ones, as red flag warnings are issued.",
+            "url": "https://www.bbc.com/news/live/cew52g8r8e7t",
+            "urlToImage": "https://static.files.bbci.co.uk/ws/simorgh-assets/public/news/images/metadata/poster-1024x576.png",
+            "publishedAt": "2025-01-14T06:36:04Z",
+            "content": "Gabriela PomeroyLive reporter\r\nImage caption, Sam Glaser at the site of his parents' house: \"I wanted to find something, but everything was incinerated.\"\r\nHarriet\r\nGlaser, 85, played the piano every … [+934 chars]"
+        },
+        {
+            "source": {
+                "id": null,
+                "name": "Live Science"
+            },
+            "author": "Stephanie Pappas",
+            "title": "See Mercury's frigid north pole in extraordinary new images from the BepiColombo spacecraft - Livescience.com",
+            "description": "A joint Japanese-European mission to Mercury just made its sixth flyby of the planet, revealing stunning close-ups of the permanently shadowed craters at Mercury's north pole.",
+            "url": "https://www.livescience.com/space/mercury/see-mercurys-frigid-north-pole-in-extraordinary-new-images-from-the-bepicolombo-spacecraft",
+            "urlToImage": "https://cdn.mos.cms.futurecdn.net/S5je5WiyVF2J29C43jh4U4-1200-80.jpg",
+            "publishedAt": "2025-01-13T14:30:00Z",
+            "content": "New photos of Mercury's mysterious north pole reveal a glimpse of the permanently dark, frigid craters that may hold ice dozens of feet thick, even though Mercury\r\n is the closest planet to the sun.\r… [+2406 chars]"
+        },
+        {
+            "source": {
+                "id": null,
+                "name": "Live959.com"
+            },
+            "author": "jessestewart",
+            "title": "Nasty Virus Continues to Spread Throughout Massachusetts - Live 95.9",
+            "description": "Massachusetts is seeing an uptick in this very contagious virus.",
+            "url": "https://live959.com/increased-noroviurs-cases-massachusetts/",
+            "urlToImage": "https://townsquare.media/site/920/files/2025/01/attachment-RS25803_GettyImages-518814250-scr-1.jpg?w=1200&q=75&format=natural",
+            "publishedAt": "2025-01-13T12:55:54Z",
+            "content": "Massachusetts residents continue to contract viruses as the winter season marches on. One virus that continues to infect many folks in the Bay State whether it's Boston, Worcester, or the Berkshires … [+2556 chars]"
+        }
+    ]
+}
