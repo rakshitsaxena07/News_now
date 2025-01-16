@@ -9,6 +9,8 @@ export class News extends Component {
       article: [],
       loading: false,
       page: 1, // Initialize page state
+      totalResults: 0, // Total number of articles
+      pageSize: 9, // Articles per page
     };
   }
 
@@ -18,7 +20,7 @@ export class News extends Component {
   }
 
   fetchNews = async (page) => {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=fae3e4053a6a45c89dc6a62d20895da8&page=${page}&pageSize=9`;
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=fae3e4053a6a45c89dc6a62d20895da8&page=${page}&pageSize=${this.state.pageSize}`;
 
     try {
       this.setState({ loading: true });
@@ -32,6 +34,7 @@ export class News extends Component {
       this.setState({
         article: data.articles,
         loading: false,
+        totalResults: data.totalResults, // Store the total number of articles
       });
     } catch (error) {
       console.error("Error fetching news:", error);
@@ -52,16 +55,23 @@ export class News extends Component {
   handleNextClick = async () => {
     console.log("Next button clicked");
 
-    const nextPage = this.state.page + 1;
-    this.setState({ page: nextPage }); // Update page state
-    this.fetchNews(nextPage); // Fetch news for the updated page
+    const totalPages = Math.ceil(this.state.totalResults / this.state.pageSize); // Calculate total pages
+
+    if (this.state.page < totalPages) {
+      const nextPage = this.state.page + 1;
+      this.setState({ page: nextPage }); // Update page state
+      this.fetchNews(nextPage); // Fetch news for the updated page
+    }
   };
 
   render() {
     console.log("Render from news element");
+    const totalPages = Math.ceil(this.state.totalResults / this.state.pageSize); // Calculate total pages
+
     return (
       <div className="container my-3">
-        <h1>Top Headlines</h1>
+        <h1 className="text-center">Top Headlines</h1>
+
         <div className="row">
           {this.state.article.map((element) => {
             return (
@@ -85,7 +95,9 @@ export class News extends Component {
           >
             &larr; Previous
           </button>
+
           <button
+            disabled={this.state.page >= totalPages}
             type="button"
             className="btn btn-dark my-4"
             onClick={this.handleNextClick}
