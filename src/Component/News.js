@@ -2,86 +2,96 @@ import React, { Component } from "react";
 import Newsitem from "./Newsitem";
 
 export class News extends Component {
-  articles = [
-    {
-      source: {
-        id: null,
-        name: "BBC News",
-      },
-      author: "https://www.facebook.com/bbcnews",
-      title:
-        "Los Angeles braces for dangerously high winds as fires continue to burn - live updates - BBC.com",
-      description:
-        "Forecasters say gusts of up to 70mph could spark new fires and spread current ones, as red flag warnings are issued.",
-      url: "https://www.bbc.com/news/live/cew52g8r8e7t",
-      urlToImage:
-        "https://static.files.bbci.co.uk/ws/simorgh-assets/public/news/images/metadata/poster-1024x576.png",
-      publishedAt: "2025-01-14T06:36:04Z",
-      content:
-        'Gabriela PomeroyLive reporter\r\nImage caption, Sam Glaser at the site of his parents\' house: "I wanted to find something, but everything was incinerated."\r\nHarriet\r\nGlaser, 85, played the piano every … [+934 chars]',
-    },
-    {
-      source: {
-        id: null,
-        name: "Live Science",
-      },
-      author: "Stephanie Pappas",
-      title:
-        "See Mercury's frigid north pole in extraordinary new images from the BepiColombo spacecraft - Livescience.com",
-      description:
-        "A joint Japanese-European mission to Mercury just made its sixth flyby of the planet, revealing stunning close-ups of the permanently shadowed craters at Mercury's north pole.",
-      url: "https://www.livescience.com/space/mercury/see-mercurys-frigid-north-pole-in-extraordinary-new-images-from-the-bepicolombo-spacecraft",
-      urlToImage:
-        "https://cdn.mos.cms.futurecdn.net/S5je5WiyVF2J29C43jh4U4-1200-80.jpg",
-      publishedAt: "2025-01-13T14:30:00Z",
-      content:
-        "New photos of Mercury's mysterious north pole reveal a glimpse of the permanently dark, frigid craters that may hold ice dozens of feet thick, even though Mercury\r\n is the closest planet to the sun.\r… [+2406 chars]",
-    },
-    {
-      source: {
-        id: null,
-        name: "Live959.com",
-      },
-      author: "jessestewart",
-      title:
-        "Nasty Virus Continues to Spread Throughout Massachusetts - Live 95.9",
-      description:
-        "Massachusetts is seeing an uptick in this very contagious virus.",
-      url: "https://live959.com/increased-noroviurs-cases-massachusetts/",
-      urlToImage:
-        "https://townsquare.media/site/920/files/2025/01/attachment-RS25803_GettyImages-518814250-scr-1.jpg?w=1200&q=75&format=natural",
-      publishedAt: "2025-01-13T12:55:54Z",
-      content:
-        "Massachusetts residents continue to contract viruses as the winter season marches on. One virus that continues to infect many folks in the Bay State whether it's Boston, Worcester, or the Berkshires … [+2556 chars]",
-    },
-  ];
-
   constructor() {
     super();
-    console.log("Consturctor from news element");
+    console.log("Constructor from news element");
     this.state = {
-      //for dynamic content
-      article: this.articles,
+      article: [],
       loading: false,
+      page: 1, // Initialize page state
     };
   }
+
+  componentDidMount() {
+    console.log("ComponentDidMount from news element");
+    this.fetchNews(this.state.page); // Use the initial page state
+  }
+
+  fetchNews = async (page) => {
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=fae3e4053a6a45c89dc6a62d20895da8&page=${page}&pageSize=9`;
+
+    try {
+      this.setState({ loading: true });
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+
+      this.setState({
+        article: data.articles,
+        loading: false,
+      });
+    } catch (error) {
+      console.error("Error fetching news:", error);
+      this.setState({ loading: false });
+    }
+  };
+
+  handlePreviousClick = async () => {
+    console.log("Previous button clicked");
+
+    if (this.state.page > 1) {
+      const prevPage = this.state.page - 1;
+      this.setState({ page: prevPage }); // Update page state
+      this.fetchNews(prevPage); // Fetch news for the updated page
+    }
+  };
+
+  handleNextClick = async () => {
+    console.log("Next button clicked");
+
+    const nextPage = this.state.page + 1;
+    this.setState({ page: nextPage }); // Update page state
+    this.fetchNews(nextPage); // Fetch news for the updated page
+  };
+
   render() {
+    console.log("Render from news element");
     return (
       <div className="container my-3">
-        <h2>Top Headlines</h2>
+        <h1>Top Headlines</h1>
         <div className="row">
           {this.state.article.map((element) => {
             return (
               <div className="col-md-4" key={element.url}>
-                <Newsitem 
-                  title={element.title.slice(0,45)}
-                  description={element.description.slice(0,88)} 
-                  imageurl={element.urlToImage}
+                <Newsitem
+                  title={element.title}
+                  description={element.description}
+                  imageurl={element.urlToImage || "default-image.jpg"}
                   newsurl={element.url}
                 />
               </div>
             );
           })}
+        </div>
+        <div className="container d-flex justify-content-between">
+          <button
+            disabled={this.state.page <= 1}
+            type="button"
+            className="btn btn-dark my-4"
+            onClick={this.handlePreviousClick}
+          >
+            &larr; Previous
+          </button>
+          <button
+            type="button"
+            className="btn btn-dark my-4"
+            onClick={this.handleNextClick}
+          >
+            Next &rarr;
+          </button>
         </div>
       </div>
     );
