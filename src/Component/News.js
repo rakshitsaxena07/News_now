@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import Newsitem from "./Newsitem";
+import Spinner from "./Spinner";
+import PropTypes from 'prop-types'
+
 
 export class News extends Component {
+  static defaultProps = {
+    country:PropTypes.string,
+    PageSize:PropTypes.number,
+    category:PropTypes.string, 
+  }
   constructor() {
     super();
     console.log("Constructor from news element");
@@ -20,7 +28,7 @@ export class News extends Component {
   }
 
   fetchNews = async (page) => {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=fae3e4053a6a45c89dc6a62d20895da8&page=${page}&pageSize=${this.state.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=fae3e4053a6a45c89dc6a62d20895da8&page=${page}&pageSize=${this.state.pageSize}`;
 
     try {
       this.setState({ loading: true });
@@ -71,20 +79,22 @@ export class News extends Component {
     return (
       <div className="container my-3">
         <h1 className="text-center">Top Headlines</h1>
+        {this.state.loading && <Spinner />}
 
         <div className="row">
-          {this.state.article.map((element) => {
-            return (
-              <div className="col-md-4" key={element.url}>
-                <Newsitem
-                  title={element.title}
-                  description={element.description}
-                  imageurl={element.urlToImage || "default-image.jpg"}
-                  newsurl={element.url}
-                />
-              </div>
-            );
-          })}
+          {!this.state.loading &&
+            this.state.article.map((element) => {
+              return (
+                <div className="col-md-4" key={element.url}>
+                  <Newsitem
+                    title={element.title}
+                    description={element.description}
+                    imageurl={element.urlToImage || "default-image.jpg"}
+                    newsurl={element.url}
+                  />
+                </div>
+              );
+            })}
         </div>
         <div className="container d-flex justify-content-between">
           <button
