@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Newsitem from "./Newsitem";
 import Spinner from "./Spinner";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export class News extends Component {
   static defaultProps = {
@@ -29,7 +29,9 @@ export class News extends Component {
   }
 
   fetchNews = async (page) => {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=fae3e4053a6a45c89dc6a62d20895da8&page=${page}&pageSize=${this.state.pageSize}`;
+    console.log('API Key:', process.env.REACT_APP_API_KEY);
+
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=${process.env.REACT_APP_API_KEY}&page=${page}&pageSize=${this.state.pageSize}`;
 
     try {
       this.setState({ loading: true });
@@ -71,8 +73,8 @@ export class News extends Component {
 
     // Apply styles based on dark mode state
     const containerStyle = {
-      backgroundColor: this.props.darkMode ? '#042743' : '#fff',
-      color: this.props.darkMode ? '#fff' : '#000',
+      backgroundColor: this.props.darkMode ? "#042743" : "#fff",
+      color: this.props.darkMode ? "#fff" : "#000",
     };
 
     return (
