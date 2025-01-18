@@ -1,30 +1,31 @@
 import React, { Component } from "react";
 import Newsitem from "./Newsitem";
 import Spinner from "./Spinner";
-import PropTypes from 'prop-types'
-
+import PropTypes from 'prop-types';
 
 export class News extends Component {
   static defaultProps = {
-    country:PropTypes.string,
-    PageSize:PropTypes.number,
-    category:PropTypes.string, 
-  }
-  constructor() {
-    super();
+    country: "us",
+    pageSize: 9,
+    category: "General",
+  };
+
+  constructor(props) {
+    super(props);
     console.log("Constructor from news element");
     this.state = {
-      article: [],
+      articles: [],
       loading: false,
-      page: 1, // Initialize page state
-      totalResults: 0, // Total number of articles
-      pageSize: 9, // Articles per page
+      page: 1,
+      totalResults: 0,
+      pageSize: 9,
     };
+    document.title = `${this.props.category} - NewsMonkey`;
   }
 
   componentDidMount() {
     console.log("ComponentDidMount from news element");
-    this.fetchNews(this.state.page); // Use the initial page state
+    this.fetchNews(this.state.page);
   }
 
   fetchNews = async (page) => {
@@ -37,12 +38,10 @@ export class News extends Component {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
-
       this.setState({
-        article: data.articles,
+        articles: data.articles,
         loading: false,
-        totalResults: data.totalResults, // Store the total number of articles
+        totalResults: data.totalResults,
       });
     } catch (error) {
       console.error("Error fetching news:", error);
@@ -51,39 +50,39 @@ export class News extends Component {
   };
 
   handlePreviousClick = async () => {
-    console.log("Previous button clicked");
-
     if (this.state.page > 1) {
       const prevPage = this.state.page - 1;
-      this.setState({ page: prevPage }); // Update page state
-      this.fetchNews(prevPage); // Fetch news for the updated page
+      this.setState({ page: prevPage });
+      this.fetchNews(prevPage);
     }
   };
 
   handleNextClick = async () => {
-    console.log("Next button clicked");
-
-    const totalPages = Math.ceil(this.state.totalResults / this.state.pageSize); // Calculate total pages
-
+    const totalPages = Math.ceil(this.state.totalResults / this.state.pageSize);
     if (this.state.page < totalPages) {
       const nextPage = this.state.page + 1;
-      this.setState({ page: nextPage }); // Update page state
-      this.fetchNews(nextPage); // Fetch news for the updated page
+      this.setState({ page: nextPage });
+      this.fetchNews(nextPage);
     }
   };
 
   render() {
-    console.log("Render from news element");
-    const totalPages = Math.ceil(this.state.totalResults / this.state.pageSize); // Calculate total pages
+    const totalPages = Math.ceil(this.state.totalResults / this.state.pageSize);
+
+    // Apply styles based on dark mode state
+    const containerStyle = {
+      backgroundColor: this.props.darkMode ? '#042743' : '#fff',
+      color: this.props.darkMode ? '#fff' : '#000',
+    };
 
     return (
-      <div className="container my-3">
-        <h1 className="text-center">Top Headlines</h1>
+      <div className="container my-3" style={containerStyle}>
+        <h1 className="text-center">Top {this.props.category} Headlines</h1>
         {this.state.loading && <Spinner />}
 
         <div className="row">
           {!this.state.loading &&
-            this.state.article.map((element) => {
+            this.state.articles.map((element) => {
               return (
                 <div className="col-md-4" key={element.url}>
                   <Newsitem
@@ -91,6 +90,10 @@ export class News extends Component {
                     description={element.description}
                     imageurl={element.urlToImage || "default-image.jpg"}
                     newsurl={element.url}
+                    author={element.author}
+                    date={element.publishedAt}
+                    source={element.source.name}
+                    darkMode={this.props.darkMode} // Passing darkMode prop here
                   />
                 </div>
               );
