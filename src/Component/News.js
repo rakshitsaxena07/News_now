@@ -30,6 +30,7 @@ export class News extends Component {
 
   fetchNews = async (page) => {
     console.log('API Key:', process.env.REACT_APP_API_KEY);
+    
 
     const url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=${process.env.REACT_APP_API_KEY}&page=${page}&pageSize=${this.state.pageSize}`;
 
@@ -67,6 +68,7 @@ export class News extends Component {
       this.fetchNews(nextPage);
     }
   };
+  
 
   render() {
     const totalPages = Math.ceil(this.state.totalResults / this.state.pageSize);
