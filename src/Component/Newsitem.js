@@ -6,7 +6,7 @@ export class Newsitem extends Component {
 
     // Apply dark mode styles conditionally
     const cardStyle = {
-      backgroundColor: this.props.darkMode ? '#333' : '#fff',
+      backgroundColor: this.props.darkMode ? '#000000' : '#fff',
       color: this.props.darkMode ? '#fff' : '#000',
     };
 
